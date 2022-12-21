@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>练习2——Transition动画</title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    .div {
+        width: 400px;
+        height: 400px;
+        /* background-color: green; */
+        margin: 0 auto;
+    }
+
+    .box1 {
+        position: relative;
+        border-radius: 10px;
+        width: 50px;
+        height: 50px;
+        background: rgb(216, 30, 6);
+        transition: padding 2s;
+        overflow: hidden;
+        /* margin:  100px 0px; */
+        top: 100px;
+    }
+
+    .box1:hover {
+        padding-left: 150px;
+    }
+
+    .box2 {
+        position: relative;
+        border-radius: 10px;
+        width: 50px;
+        height: 50px;
+        background: rgb(37, 141, 232);
+        transition: padding 2s;
+        overflow: hidden;
+        /* margin: 50px 0px; */
+        top: 100px;
+    }
+
+    .box2:hover {
+        padding-left: 150px;
+    }
+
+    .text1 {
+        position: absolute;
+        top: 17px;
+        left: 50px;
+        font-size: 5px;
+        color: rgb(254, 254, 254);
+        white-space: nowrap;
+    }
+
+    .text2 {
+        position: absolute;
+        top: 17px;
+        left: 50px;
+        font-size: 5px;
+        color: rgb(254, 254, 254);
+        white-space: nowrap;
+    }
+
+    img {
+        width: 50px;
+        position: absolute;
+    }
+
+    .div1 {
+        width: 150px;
+        height: 150px;
+        border-radius: 20px;
+        animation: spin 10s linear infinite;
+        text-align: center;
+        line-height: 150px;
+        background-color: green;
+        color: rgb(0, 0, 0);
+        font-size: 32px;
+        font-family: '仿宋', Courier, monospace;
+        position: relative;
+    }
+
+    @keyframes spin {
+        0% {
+            background-color: rgb(255, 0, 0);
+            left: 100px;
+            top: 100px;
+            rotate: 25deg;
+        }
+
+        25% {
+            background-color: rgb(226, 144, 2);
+            left: 90%;
+            top: 0px;
+            rotate: 125deg;
+        }
+
+        50% {
+            background-color: rgb(255, 238, 0);
+            rotate: 225deg;
+            left: 90%;
+            top: 800px;
+        }
+
+        75% {
+            background-color: rgb(36, 221, 3);
+            rotate: 325deg;
+            top: 800px;
+            left: 0px;
+        }
+
+        100% {
+            background-color: rgb(144, 0, 255);
+            rotate: 360deg;
+            right: 0px;
+            top: 0px;
+        }
+    }
+</style>
+
+<body>
+    <div class="div1">
+        滑动方块
+    </div>
+    <div class="div">
+        <div class="box1">
+            <p class="text1">访客 Vistor</p><img src="./images/xuesheng.png" alt="">
+        </div>
+        <div class="box2">
+            <p class="text2">学生 Student</p><img src="./images/yh.png" alt="">
+        </div>
+    </div>
+
+</body>
+
+</html>
