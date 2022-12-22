@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+					.demo1{
+						width:40px;
+						height:40px;
+						background-color:pink;
+						transition:width 1s;
+					}
+					.demo2{
+						width:40px;
+						height:40px;
+						background-color:blue;
+						transition:width 1s;
+					}
+					img{
+						width: 30px;
+						height: 30px;
+					}
+					.yi{
+						color: white;
+						display: none;
+						line-height: 40px;
+						margin-left: 20px;
+						position:absolute;
+					}
+					.er{
+						display: inline-block;
+						line-height: 30px;
+					}
+					div:hover{
+						width: 150px;
+					}
+					div:hover .yi{
+						display: inline-block;
+					}
+					div:hover .er{
+						float: right;
+						line-height: 30px;
+					}
+				</style>
+	</head>
+	<body>
+		<div class="demo1">
+					<span class="yi">访客 visitor</span>
+					<span class="er"> <img src="访客.png"/> </span>
+				</div>
+				<div class="demo2">
+					<span class="yi">学生 student</span>
+					<span class="er"> <img src="学生.png"/> </span>	
+				</div>
+	</body>
+</html>

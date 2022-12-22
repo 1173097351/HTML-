@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			div {
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				background-color: red;
+				animation: my1 10s;
+			}
+
+			@keyframes my1 {
+				0% {
+					background-color: pink;
+					left: 0px;
+					top: 0px;
+				}
+
+				25% {
+					background-color: orange;
+					left: 200px;
+					top: 0px;
+				}
+
+				50% {
+					background-color: green;
+					left: 200px;
+					top: 200px;
+				}
+
+				75% {
+					background-color: purple;
+					left: 0px;
+					top: 200px;
+				}
+
+				100% {
+					background-color: grey;
+					left: 0px;
+					top: 0px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div></div>
+	</body>
+</html>
