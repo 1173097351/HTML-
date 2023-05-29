@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhou.dao.PesticideInformationMapper">
+
+    <resultMap id="pesticideInformationMap" type="PesticideInformation">
+        <id property="pesticideId" column="pesticide_id" jdbcType="VARCHAR"/>
+        <result property="pesticideName" column="pesticide_name" jdbcType="VARCHAR"/>
+        <result property="supplierId" column="supplier_id" jdbcType="VARCHAR"/>
+        <result property="storageNum" column="storage_num" jdbcType="DOUBLE"/>
+        <result property="inNum" column="in_num" jdbcType="DOUBLE"/>
+        <result property="outNum" column="out_num" jdbcType="DOUBLE"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <association property="supplier" javaType="Supplier">
+            <id property="supplierId" column="supplier_id" jdbcType="VARCHAR"/>
+            <result property="supplierName" column="supplier_name" jdbcType="VARCHAR"/>
+            <result property="supplierAddress" column="supplier_address" jdbcType="VARCHAR"/>
+            <result property="concatPerson" column="concat_person" jdbcType="VARCHAR"/>
+            <result property="concatMethod" column="concat_method" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+    <!--查询全部农药-->
+    <select id="queryPesticideInformationList" resultMap="pesticideInformationMap">
+        select * from pesticide_information p
+        left join
+        supplier u on
+        p.supplier_id=u.supplier_id
+        <where>
+            <if test="pesticideId!=null">
+                p.pesticide_id=#{pesticideId}
+            </if>
+        </where>
+    </select>
+
+    <!--根据map查询农药-->
+    <select id="queryPesticideInformation" resultMap="pesticideInformationMap">
+        select * from pesticide_information p
+        left join
+        supplier u on
+        p.supplier_id=u.supplier_id
+        <where>
+            <if test="pesticideId!=null">
+                p.pesticide_id=#{pesticideId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增农药-->
+    <insert id="insertPesticideInformation">
+        <selectKey keyProperty="pesticide_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into pesticide_information(pesticide_id,pesticide_name,status)
+        value
+        (#{pesticide_id},#{pesticideName},#{status})
+    </insert>
+
+    <!--根据id，更新农药-->
+    <update id="updatePesticideInformation">
+        update pesticide_information p
+        <set>
+            <if test="pesticideName!=null">
+                p.pesticide_name=#{pesticideName},
+            </if>
+            <if test="supplierId!=null">
+                p.supplier_id=#{supplierId},
+            </if>
+            <if test="inNum!=null">
+                p.in_num=#{inNum},
+            </if>
+            <if test="updateTime!=null">
+                p.update_time=#{updateTime}
+            </if>
+        </set>
+        where p.pesticide_id =#{pesticideId}
+    </update>
+
+    <!--根据id，删除农药-->
+    <delete id="deletePesticideInformation">
+        delete
+        from pesticide_information p
+        where p.pesticide_id = #{pesticideId}
+    </delete>
+
+
+</mapper>

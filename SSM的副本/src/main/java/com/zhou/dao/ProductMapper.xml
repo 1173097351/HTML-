@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhou.dao.ProductMapper">
+
+    <resultMap id="agriculturalProductInformationMap" type="AgriculturalProductInformation">
+        <id property="agrId" column="agr_id"/>
+        <result property="cropId" column="crop_id"/>
+        <result property="username" column="username"/>
+        <result property="storageNum" column="storage_num"/>
+        <result property="inNum" column="in_num"/>
+        <result property="outNum" column="out_num"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <collection property="agrin" ofType="Agrin">
+            <id property="agrin" column="agrin"/>
+            <result property="agrId" column="agr_id"/>
+            <result property="inNum" column="in_num"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="status" column="status"/>
+        </collection>
+    </resultMap>
+    <resultMap id="agrinMap" type="Agrin">
+        <id property="agrin" column="agrin"/>
+        <result property="agrId" column="agr_id"/>
+        <result property="inNum" column="in_num"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <resultMap id="cropMap" type="Crop">
+        <id property="cropId" column="crop_id"/>
+        <result property="landId" column="land_id"/>
+        <result property="seedId" column="seed_id"/>
+        <result property="cropName" column="cropName"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <!--农产品销售，结果集映射-->
+    <resultMap id="agroutMap" type="Agrout">
+        <id property="agroutId" column="agrout_id"/>
+        <result property="outNum" column="out_num"/>
+        <result property="distributorId" column="distributor_id"/>
+        <result property="agrId" column="agr_id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <association property="agriculturalProductInformation" javaType="AgriculturalProductInformation">
+            <id property="agrId" column="agr_id"/>
+            <result property="cropId" column="crop_id"/>
+            <result property="username" column="username"/>
+            <result property="storageNum" column="storage_num"/>
+            <result property="inNum" column="in_num"/>
+            <result property="outNum" column="out_num"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="status" column="status"/>
+        </association>
+        <association property="agency" javaType="Agency">
+            <id property="distributorId" column="distributor_id"/>
+            <result property="distributoridName" column="distributorid_name"/>
+            <result property="distributoridAddress" column="distributorid_address"/>
+            <result property="contactPerson" column="contact_person"/>
+            <result property="contactMethod" column="contact_method"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="status" column="status"/>
+        </association>
+    </resultMap>
+
+    <!--经营商结果集映射-->
+    <resultMap id="agencyMap" type="Agency">
+        <id property="distributorId" column="distributor_id"/>
+        <result property="distributoridName" column="distributorid_name"/>
+        <result property="distributoridAddress" column="distributorid_address"/>
+        <result property="contactPerson" column="contact_person"/>
+        <result property="contactMethod" column="contact_method"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+
+    <!--查询全部农产品信息-->
+    <select id="queryProductList" resultMap="agriculturalProductInformationMap">
+        select *
+        from agricultural_product_information
+    </select>
+
+    <!--根据id查询农产品信息-->
+    <select id="queryProductId" resultMap="agriculturalProductInformationMap">
+        select *
+        from agricultural_product_information a
+        where a.agr_id = #{agrId}
+    </select>
+
+
+    <!--根据名称，查询农产品信息-->
+    <select id="queryProductUsername" resultMap="agriculturalProductInformationMap">
+        select *
+        from agricultural_product_information a
+        where a.username = #{username}
+    </select>
+
+    <!--根据id，修改农产品信息-->
+    <update id="updateProduct" parameterType="map">
+        update agricultural_product_information a
+        set a.username=#{username},
+            a.storage_num=#{storageNum},
+            a.in_num=#{inNum},
+            a.out_num=#{outNum},
+            a.update_time=#{updateTime}
+        where a.agr_id = #{agrId}
+    </update>
+
+    <!--根据id，删除农产品信息-->
+    <delete id="deleteProductMap" parameterType="map">
+        delete
+        from agricultural_product_information a
+        where a.agr_id = #{agrId}
+    </delete>
+
+    <!--根据id，删除进库信息-->
+    <delete id="deleteAgrinMap" parameterType="map">
+        delete
+        from agrin a
+        where a.agr_id = #{agrId}
+    </delete>
+
+    <!--添加农产品信息-->
+    <insert id="insertProduct" parameterType="map">
+        <selectKey keyProperty="agr_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into agricultural_product_information(agr_id,crop_id,username,storage_num,in_num,out_num,status)
+        value
+        (#{agr_id},#{cropId},#{username},#{storageNum},#{inNum},#{out_num},#{status})
+    </insert>
+
+    <!--根据农产品id，查询进库信息-->
+    <select id="queryAgrinList" resultMap="agriculturalProductInformationMap">
+        select g.agrin, g.agr_id, g.in_num, g.update_time, g.status, a.username
+        from agricultural_product_information a,
+             agrin g
+        where g.agr_id = a.agr_id
+          and a.agr_id = #{agrId}
+    </select>
+
+    <!--新增农产品进库信息-->
+    <insert id="insertAgrin" parameterType="map">
+        <selectKey keyProperty="agrin" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into agrin(agrin,agr_id,in_num,update_time,status)
+        value
+        (#{agrin},#{agrId},#{inNum},#{updateTime},#{status})
+    </insert>
+
+    <!--查询农产品和进库记录的全部信息-->
+    <select id="queryMacroscopical" resultMap="agriculturalProductInformationMap">
+        select *
+        from agricultural_product_information a,
+             agrin g
+    </select>
+
+    <!--查询农产品和进库记录的全部信息-->
+    <select id="queryMacroscopicalUsername" resultMap="agrinMap">
+        select g.in_num, g.update_time
+        from agricultural_product_information a,
+             agrin g
+        where a.agr_id = g.agr_id
+          and a.username = #{username}
+    </select>
+
+    <!--查询农产品和进库记录的全部信息-->
+    <select id="queryMicrocosmic" resultMap="agrinMap">
+        select g.in_num, g.update_time
+        from agrin g
+    </select>
+
+    <!--根据map，查询销售记录-->
+    <select id="querySalesRecordList" resultMap="agroutMap">
+        select *
+        from agrout t
+                 left join
+             agricultural_product_information a on
+                 t.agr_id = a.agr_id
+                 left join
+             agency y on
+                 t.distributor_id = y.distributor_id
+        where a.agr_id = #{agrId}
+        --         select *
+--         from agrout t,
+--              agricultural_product_information a ,
+--              agency y
+--         where t.distributor_id = y.distributor_id
+--           and t.agr_id = a.agr_id
+--           and a.agr_id = '1'
+    </select>
+
+    <!--新增农产品销售记录-->
+    <insert id="insertSalesRecord" parameterType="map">
+        <selectKey keyProperty="agrout_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into agrout(agrout_id,out_num,distributor_id,agr_id,update_time,status)
+        value
+        (#{agrout_id},#{outNum},#{distributorId},#{agrId},#{updateTime},#{status})
+    </insert>
+
+    <!--查询全部经营商-->
+    <select id="queryAgencyList" resultMap="agencyMap">
+        select *
+        from agency
+    </select>
+
+    <!--根据map，查询销售记录-->
+    <select id="querySalesRecord" resultMap="agroutMap">
+        select *
+        from agrout t
+                 left join
+             agricultural_product_information a on
+                 t.agr_id = a.agr_id
+                 left join
+             agency y on
+                 t.distributor_id = y.distributor_id
+    </select>
+
+
+</mapper>

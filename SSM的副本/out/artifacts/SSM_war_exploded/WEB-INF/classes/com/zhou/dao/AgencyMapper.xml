@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhou.dao.AgencyMapper">
+
+    <resultMap id="agencyMap" type="Agency">
+        <id property="distributorId" column="distributor_id" jdbcType="VARCHAR"/>
+        <result property="distributoridName" column="distributorid_name" jdbcType="VARCHAR"/>
+        <result property="distributoridAddress" column="distributorid_address" jdbcType="VARCHAR"/>
+        <result property="contactPerson" column="contact_person" jdbcType="VARCHAR"/>
+        <result property="contactMethod" column="contact_method" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+    <!--查询全部经营商-->
+    <select id="queryAgencyList" resultMap="agencyMap">
+        select * from agency a
+        <where>
+            <if test="distributorId!=null">
+                a.distributor_id=#{distributorId}
+            </if>
+        </where>
+    </select>
+
+    <!--根据map查询经营商-->
+    <select id="queryAgency" resultMap="agencyMap">
+        select * from agency a
+        <where>
+            <if test="distributorId!=null">
+                a.distributor_id=#{distributorId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增经营商-->
+    <insert id="insertAgency">
+        <selectKey keyProperty="distributor_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into agency(distributor_id,distributorid_name,distributorid_address,contact_person,contact_method,status)
+        value
+        (#{distributor_id},#{distributoridName},#{distributoridAddress},#{contactPerson},#{contactMethod},#{status})
+    </insert>
+
+    <!--根据id，更新经营商-->
+    <update id="updateAgency">
+        update agency a
+        <set>
+            <if test="distributoridName!=null">
+                a.distributorid_name=#{distributoridName},
+            </if>
+            <if test="contactPerson!=null">
+                a.contact_person=#{contactPerson},
+            </if>
+            <if test="contactMethod!=null">
+                a.contact_method=#{contactMethod},
+            </if>
+            <if test="updateTime!=null">
+                a.update_time=#{updateTime}
+            </if>
+        </set>
+        where a.distributor_id =#{distributorId}
+    </update>
+
+    <!--根据id，删除经营商-->
+    <delete id="deleteAgency">
+        delete
+        from agency a
+        where a.distributor_id = #{distributorId}
+    </delete>
+
+
+</mapper>

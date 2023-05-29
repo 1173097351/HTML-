@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhou.dao.SeedInformationMapper">
+
+    <resultMap id="seedInformationMap" type="SeedInformation">
+        <id property="seedId" column="seed_id" jdbcType="VARCHAR"/>
+        <result property="seedName" column="seed_name" jdbcType="VARCHAR"/>
+        <result property="supplierId" column="supplier_id" jdbcType="VARCHAR"/>
+        <result property="storageNum" column="storage_num" jdbcType="DOUBLE"/>
+        <result property="inNum" column="in_num" jdbcType="DOUBLE"/>
+        <result property="outNum" column="out_num" jdbcType="DOUBLE"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <association property="supplier" javaType="Supplier">
+            <id property="supplierId" column="supplier_id" jdbcType="VARCHAR"/>
+            <result property="supplierName" column="supplier_name" jdbcType="VARCHAR"/>
+            <result property="supplierAddress" column="supplier_address" jdbcType="VARCHAR"/>
+            <result property="concatPerson" column="concat_person" jdbcType="VARCHAR"/>
+            <result property="concatMethod" column="concat_method" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+    <!--查询全部种苗-->
+    <select id="querySeedInformationList" resultMap="seedInformationMap">
+        select * from seed_information s
+        left join
+        supplier u on
+        s.supplier_id=u.supplier_id
+        <where>
+            <if test="seedId!=null">
+                s.seed_id=#{seedId}
+            </if>
+        </where>
+    </select>
+
+    <!--根据map查询种苗-->
+    <select id="querySeedInformation" resultMap="seedInformationMap">
+        select * from seed_information s
+        left join
+        supplier u on
+        s.supplier_id=u.supplier_id
+        <where>
+            <if test="seedId!=null">
+                s.seed_id=#{seedId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增种苗-->
+    <insert id="insertSeedInformation">
+        <selectKey keyProperty="seed_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into seed_information(seed_id,seed_name,status)
+        value
+        (#{seed_id},#{seedName},#{status})
+    </insert>
+
+    <!--根据id，更新种苗-->
+    <update id="updateSeedInformation">
+        update seed_information s
+        <set>
+            <if test="seedName!=null">
+                s.seed_name=#{seedName},
+            </if>
+            <if test="supplierId!=null">
+                s.supplier_id=#{supplierId},
+            </if>
+            <if test="inNum!=null">
+                s.in_num=#{inNum},
+            </if>
+            <if test="updateTime!=null">
+                s.update_time=#{updateTime}
+            </if>
+        </set>
+        where s.seed_id =#{seedId}
+    </update>
+
+    <!--根据id，删除种苗-->
+    <delete id="deleteSeedInformationId">
+        delete
+        from seed_information s
+        where s.seed_id = #{seedId}
+    </delete>
+
+
+</mapper>

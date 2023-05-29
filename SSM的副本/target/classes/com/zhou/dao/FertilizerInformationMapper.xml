@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhou.dao.FertilizerInformationMapper">
+
+    <resultMap id="fertilizerInformationMap" type="FertilizerInformation">
+        <id property="fertilizerId" column="fertilizer_id" jdbcType="VARCHAR"/>
+        <result property="fertilizerName" column="fertilizer_name" jdbcType="VARCHAR"/>
+        <result property="supplierId" column="supplier_id" jdbcType="VARCHAR"/>
+        <result property="storageNum" column="storage_num" jdbcType="DOUBLE"/>
+        <result property="inNum" column="in_num" jdbcType="DOUBLE"/>
+        <result property="outNum" column="out_num" jdbcType="DOUBLE"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <association property="supplier" javaType="Supplier">
+            <id property="supplierId" column="supplier_id" jdbcType="VARCHAR"/>
+            <result property="supplierName" column="supplier_name" jdbcType="VARCHAR"/>
+            <result property="supplierAddress" column="supplier_address" jdbcType="VARCHAR"/>
+            <result property="concatPerson" column="concat_person" jdbcType="VARCHAR"/>
+            <result property="concatMethod" column="concat_method" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+    <!--查询全部化肥-->
+    <select id="queryFertilizerInformationList" resultMap="fertilizerInformationMap">
+        select * from fertilizer_information f
+        left join
+        supplier u on
+        f.supplier_id=u.supplier_id
+        <where>
+            <if test="fertilizerId!=null">
+                f.fertilizer_id=#{fertilizerId}
+            </if>
+        </where>
+    </select>
+
+    <!--根据map查询农药-->
+    <select id="queryFertilizerInformation" resultMap="fertilizerInformationMap">
+        select * from fertilizer_information f
+        left join
+        supplier u on
+        f.supplier_id=u.supplier_id
+        <where>
+            <if test="fertilizerId!=null">
+                f.fertilizer_id=#{fertilizerId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增农药-->
+    <insert id="insertFertilizerInformation">
+        <selectKey keyProperty="fertilizer_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into fertilizer_information(fertilizer_id,fertilizer_name,status)
+        value
+        (#{fertilizer_id},#{fertilizerName},#{status})
+    </insert>
+
+    <!--根据id，更新农药-->
+    <update id="updateFertilizerInformation">
+        update fertilizer_information f
+        <set>
+            <if test="fertilizerName!=null">
+                f.fertilizer_name=#{fertilizerName},
+            </if>
+            <if test="supplierId!=null">
+                f.supplier_id=#{supplierId},
+            </if>
+            <if test="inNum!=null">
+                f.in_num=#{inNum},
+            </if>
+            <if test="updateTime!=null">
+                f.update_time=#{updateTime}
+            </if>
+        </set>
+        where f.fertilizer_id =#{fertilizerId}
+    </update>
+
+    <!--根据id，删除农药-->
+    <delete id="deleteFertilizerInformation">
+        delete
+        from fertilizer_information f
+        where f.fertilizer_id = #{fertilizerId}
+    </delete>
+
+
+</mapper>
