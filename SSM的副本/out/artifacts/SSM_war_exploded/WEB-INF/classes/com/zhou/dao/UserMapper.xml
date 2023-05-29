@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhou.dao.UserMapper">
+
+    <resultMap id="UserInformationMapper" type="UserInformation">
+        <id property="uinfoId" column="uinfo_id"/>
+        <result property="uid" column="uid"/>
+        <result property="parkId" column="park_id"/>
+        <association property="userAccount" javaType="UserAccount">
+            <id property="uid" column="uid"/>
+            <result property="unick_name" column="unick_name"/>
+            <result property="uaccount" column="uaccount"/>
+            <result property="upassword" column="upassword"/>
+            <result property="role_flag" column="role_flag"/>
+            <result property="update_time" column="update_time"/>
+        </association>
+        <association property="parkInformation" javaType="ParkInformation">
+            <id property="parkId" column="park_id"/>
+            <result property="parkName" column="park_name"/>
+            <result property="parkAddress" column="park_address"/>
+            <result property="concatPerson" column="concat_person"/>
+            <result property="concatMethod" column="concat_method"/>
+            <result property="updateTime" column="update_time"/>
+        </association>
+    </resultMap>
+    <!--查询用户信息，农园信息-->
+    <select id="queryListUserInformation" resultMap="UserInformationMapper">
+        select *
+        from user_account a,
+             user_information i,
+             park_information p
+        where i.uid = a.uid
+          and i.park_id = p.park_id
+          and i.uid = #{uid}
+    </select>
+
+    <!--查询账号、密码-->
+    <select id="queryUser" resultType="UserAccount">
+        select *
+        from ssm.user_account
+        where uaccount = #{uaccount}
+          and upassword = #{upassword}
+    </select>
+
+    <!--查询全部用户-->
+    <select id="queryListUser" resultType="UserAccount">
+        SELECT *
+        from ssm.user_account
+    </select>
+
+    <!--修改用户信息、农园信息-->
+    <update id="updateUser" parameterType="map">
+        update user_account u,park_information p,user_information i
+        set u.unick_name=#{unick_name},
+            u.upassword=#{upassword},
+            u.update_time=#{updateTime},
+            p.park_name=#{parkName},
+            p.park_address=#{parkAddress},
+            p.concat_person=#{concatPerson},
+            p.concat_method=#{concatMethod},
+            p.update_time=#{updateTime}
+        where i.uid = u.uid
+          and i.park_id = p.park_id
+          and i.uid = #{uid}
+    </update>
+
+
+    <!--根据uid查询用户信息表-->
+    <select id="userInformation" resultMap="UserInformationMapper">
+        select *
+        from user_account a,
+             user_information i,
+             park_information p
+        where i.uid = a.uid
+          and i.park_id = p.park_id
+          and i.uid = #{uid}
+    </select>
+
+
+</mapper>

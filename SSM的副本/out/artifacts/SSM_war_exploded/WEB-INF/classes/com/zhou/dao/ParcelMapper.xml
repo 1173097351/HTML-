@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhou.dao.ParcelMapper">
+
+    <resultMap id="cropMap" type="Crop">
+        <id property="cropId" column="crop_id"/>
+        <result property="landId" column="land_id"/>
+        <result property="seedId" column="seed_id"/>
+        <result property="cropName" column="cropName"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <association property="agriculturalProductInformation" javaType="AgriculturalProductInformation">
+            <id property="agrId" column="agr_id"/>
+            <result property="cropId" column="crop_id"/>
+            <result property="username" column="username"/>
+            <result property="storageNum" column="storage_num"/>
+            <result property="inNum" column="in_num"/>
+            <result property="outNum" column="out_num"/>
+            <result property="updateTime" column="update_time"/>
+        </association>
+        <association property="parcelInformation" javaType="ParcelInformation">
+            <id property="landId" column="land_id"/>
+            <result property="parkId" column="park_id"/>
+            <result property="landNum" column="land_num"/>
+            <result property="landName" column="land_name"/>
+            <result property="lande" column="lande"/>
+            <result property="landw" column="landw"/>
+            <result property="lands" column="lands"/>
+            <result property="landn" column="landn"/>
+            <result property="landSize" column="land_size"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="agrId" column="agr_id"/>
+        </association>
+        <association property="seedInformation" javaType="SeedInformation">
+            <id property="seedId" column="seed_id"/>
+            <result property="seedName" column="seed_name"/>
+            <result property="supplierId" column="supplier_id"/>
+            <result property="storageNum" column="storage_num"/>
+            <result property="inNum" column="in_num"/>
+            <result property="outNum" column="out_num"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="status" column="status"/>
+        </association>
+        <collection property="fertilizerInformation" ofType="FertilizerInformation">
+            <id property="fertilizerId" column="fertilizer_id"/>
+            <result property="fertilizerName" column="fertilizer_name"/>
+            <result property="supplierId" column="supplier_id"/>
+            <result property="storageNum" column="storage_num"/>
+            <result property="inNum" column="in_num"/>
+            <result property="outNum" column="out_num"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="status" column="status"/>
+        </collection>
+        <collection property="fertilizationInformation" ofType="FertilizationInformation">
+            <id property="applyId" column="apply_id"/>
+            <result property="fertilizerId" column="fertilizer_id"/>
+            <result property="cropId" column="crop_id"/>
+            <result property="applyNum" column="apply_num"/>
+            <result property="applyTime" column="apply_time"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="status" column="status"/>
+        </collection>
+        <collection property="applyInformation" ofType="ApplyInformation">
+            <id property="applyId" column="apply_id"/>
+            <result property="pesticideId" column="pesticide_id"/>
+            <result property="cropId" column="crop_id"/>
+            <result property="applyNum" column="apply_num"/>
+            <result property="applyTime" column="apply_time"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="status" column="status"/>
+        </collection>
+        <collection property="pesticideInformation" ofType="PesticideInformation">
+            <id property="pesticideId" column="pesticide_id"/>
+            <result property="pesticideName" column="pesticide_name"/>
+            <result property="supplierId" column="supplier_id"/>
+            <result property="storageNum" column="storage_num"/>
+            <result property="inNum" column="in_num"/>
+            <result property="outNum" column="out_num"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="status" column="status"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="seedInformationMap" type="SeedInformation">
+        <id property="seedId" column="seed_id"/>
+        <result property="seedName" column="seed_name"/>
+        <result property="supplierId" column="supplier_id"/>
+        <result property="storageNum" column="storage_num"/>
+        <result property="inNum" column="in_num"/>
+        <result property="outNum" column="out_num"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <resultMap id="fertilizerInformationMap" type="FertilizerInformation">
+        <id property="fertilizerId" column="fertilizer_id"/>
+        <result property="fertilizerName" column="fertilizer_name"/>
+        <result property="supplierId" column="supplier_id"/>
+        <result property="storageNum" column="storage_num"/>
+        <result property="inNum" column="in_num"/>
+        <result property="outNum" column="out_num"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <resultMap id="fertilizationInformationMap" type="FertilizationInformation">
+        <id property="applyId" column="apply_id"/>
+        <result property="fertilizerId" column="fertilizer_id"/>
+        <result property="cropId" column="crop_id"/>
+        <result property="applyNum" column="apply_num"/>
+        <result property="applyTime" column="apply_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <association property="fertilizerInformation" javaType="FertilizerInformation">
+            <id property="fertilizerId" column="fertilizer_id"/>
+            <result property="fertilizerName" column="fertilizer_name"/>
+            <result property="supplierId" column="supplier_id"/>
+            <result property="storageNum" column="storage_num"/>
+            <result property="inNum" column="in_num"/>
+            <result property="outNum" column="out_num"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="status" column="status"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="agriculturalProductInformationMap" type="AgriculturalProductInformation">
+        <id property="agrId" column="agr_id"/>
+        <result property="cropId" column="crop_id"/>
+        <result property="username" column="username"/>
+        <result property="storageNum" column="storage_num"/>
+        <result property="inNum" column="in_num"/>
+        <result property="outNum" column="out_num"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <resultMap id="parcelInformationMap" type="ParcelInformation">
+        <id property="landId" column="land_id"/>
+        <result property="parkId" column="park_id"/>
+        <result property="landNum" column="land_num"/>
+        <result property="landName" column="land_name"/>
+        <result property="lande" column="lande"/>
+        <result property="landw" column="landw"/>
+        <result property="lands" column="lands"/>
+        <result property="landn" column="landn"/>
+        <result property="landSize" column="land_size"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="agrId" column="agr_id"/>
+        <association property="agriculturalProductInformation" javaType="AgriculturalProductInformation">
+            <id property="agrId" column="agr_id"/>
+            <result property="cropId" column="crop_id"/>
+            <result property="username" column="username"/>
+            <result property="storageNum" column="storage_num"/>
+            <result property="inNum" column="in_num"/>
+            <result property="outNum" column="out_num"/>
+            <result property="updateTime" column="update_time"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="applyInformationMap" type="ApplyInformation">
+        <id property="applyId" column="apply_id"/>
+        <result property="pesticideId" column="pesticide_id"/>
+        <result property="cropId" column="crop_id"/>
+        <result property="applyNum" column="apply_num"/>
+        <result property="applyTime" column="apply_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <association property="pesticideInformation" javaType="PesticideInformation">
+            <id property="pesticideId" column="pesticide_id"/>
+            <result property="pesticideName" column="pesticide_name"/>
+            <result property="supplierId" column="supplier_id"/>
+            <result property="storageNum" column="storage_num"/>
+            <result property="inNum" column="in_num"/>
+            <result property="outNum" column="out_num"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="status" column="status"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="pesticideInformationMap" type="PesticideInformation">
+        <id property="pesticideId" column="pesticide_id"/>
+        <result property="pesticideName" column="pesticide_name"/>
+        <result property="supplierId" column="supplier_id"/>
+        <result property="storageNum" column="storage_num"/>
+        <result property="inNum" column="in_num"/>
+        <result property="outNum" column="out_num"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <resultMap id="irrigationInformationMap" type="IrrigationInformation">
+        <id property="irrigationId" column="irrigation_id"/>
+        <result property="cropId" column="crop_id"/>
+        <result property="irrigationNum" column="irrigation_num"/>
+        <result property="irrigationTime" column="irrigation_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+
+    <!--根据园区id，查询地块信息-->
+    <select id="queryLand" resultMap="parcelInformationMap">
+        select *
+        from parcel_information p
+                 left join
+             agricultural_product_information a on
+                 p.agr_id = a.agr_id
+        where p.park_id = #{parkId}
+    </select>
+
+    <!--根据地块名称，查询地块信息-->
+    <select id="queryLandName" resultMap="parcelInformationMap">
+        select *
+        from parcel_information p
+        where p.land_name = #{landName}
+    </select>
+
+
+    <!--跳转到修改页面：根据id查询土地信息-->
+    <select id="queryLandId" resultMap="parcelInformationMap">
+        select *
+        from parcel_information p
+                 left join
+             agricultural_product_information a on
+                 p.agr_id = a.agr_id
+        where p.land_id = p.land_id
+          and p.land_id = #{landId}
+    </select>
+
+
+    <!--查询农产品信息-->
+    <select id="queryAgriculturalProductInformation" resultMap="agriculturalProductInformationMap">
+        select *
+        from agricultural_product_information
+    </select>
+
+    <!--根据农产品名称，查询农产品信息-->
+    <select id="queryAgriculturalProductInformationName" resultMap="agriculturalProductInformationMap">
+        select *
+        from agricultural_product_information a
+        where a.username = #{username}
+    </select>
+
+    <!--查询农产品信息-->
+    <select id="queryAgrId" resultType="string">
+        select a.crop_id
+        from agricultural_product_information a
+        where a.username = #{username}
+    </select>
+
+    <!--根据id修改地块信息-->
+    <update id="updateLand" parameterType="map">
+        update parcel_information p
+        set p.land_name=#{landName},
+            p.lande=#{lande},
+            p.landw=#{landw},
+            p.lands=#{lands},
+            p.landn=#{landn},
+            p.land_size=#{landSize},
+            p.update_time=#{updateTime},
+            p.agr_id=#{agrId}
+        where p.land_id = #{landId}
+    </update>
+
+    <!--根据地块id，查询农产品信息-->
+    <select id="queryCropId" resultMap="cropMap">
+        select *
+        from crop c,
+             agricultural_product_information a
+        where c.crop_id = a.crop_id
+          and c.land_id = #{landId}
+    </select>
+
+    <!--根据id删除地块信息-->
+    <delete id="deleteLand" parameterType="String">
+        delete
+        from parcel_information p
+        where p.land_id = #{landId}
+    </delete>
+
+    <!--根据id删除农作物信息-->
+    <delete id="deleteCrop" parameterType="String">
+        delete
+        from crop c
+        where c.land_id = #{landId}
+    </delete>
+
+    <!--根据id删除农产品信息-->
+    <delete id="deleteAp" parameterType="String">
+        delete
+        from agricultural_product_information a
+        where a.crop_id = #{cropId}
+    </delete>
+
+    <!--根据id删除种植信息-->
+    <delete id="deleteSeed" parameterType="String">
+        delete
+        from seed_information s
+        where s.seed_id = #{seedId}
+    </delete>
+
+    <!--根据id删除农作物信息-->
+    <delete id="deleteCropId" parameterType="String">
+        delete
+        from crop c
+        where c.crop_id = #{cropId}
+    </delete>
+
+    <!--添加地块信息-->
+    <insert id="insertLand" parameterType="map">
+        <selectKey keyProperty="land_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into parcel_information(land_id,park_id,land_name, lande, landw, lands, landn,
+        land_size,update_time,status,agr_id)
+        value
+        (#{land_id},#{parkId},#{landName},#{lande},#{landw},#{lands},#{landn},#{landSize},#{update_time},#{status},#{agrId})
+    </insert>
+
+    <!--添加农作物信息-->
+    <insert id="insertCrop" parameterType="map">
+        <selectKey keyProperty="crop_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into crop(crop_id,land_id,seed_id,cropName,update_time,status)
+        value
+        (#{crop_id},#{landId},#{seedId},#{cropName},#{updateTime},#{status})
+    </insert>
+
+    <!--添加农产品信息-->
+    <insert id="insertAp" parameterType="map">
+        <selectKey keyProperty="agr_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into agricultural_product_information(agr_id,crop_id,username,update_time,status)
+        value
+        (#{agr_id},#{cropId},#{username},#{updateTime},#{status})
+    </insert>
+
+    <!--添加种苗信息-->
+    <insert id="insertSeed" parameterType="map">
+        <selectKey keyProperty="seed_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into seed_information(seed_id,seed_name,update_time,status)
+        value
+        (#{seed_id},#{seedName},#{updateTime},#{status})
+    </insert>
+
+
+    <!--根据园区id，查询农作物信息-->
+    <select id="queryCrop" resultMap="cropMap">
+        select c.crop_id, c.cropName, p.land_name, s.seed_name
+        from parcel_information p,
+             crop c,
+             seed_information s,
+             park_information i
+        where i.park_id = p.park_id
+          and p.land_id = c.land_id
+          and c.seed_id = s.seed_id
+          and i.park_id = #{parkId}
+    </select>
+
+    <!--根据农作物id，查询地块信息、种苗信息-->
+    <select id="queryId" resultMap="cropMap">
+        select c.crop_id, c.cropName, p.land_name, s.seed_name
+        from crop c,
+             parcel_information p,
+             seed_information s
+        where c.land_id = p.land_id
+          and c.seed_id = s.seed_id
+          and c.crop_id = #{cropId}
+    </select>
+
+    <!--根据农作物id，修改农作物名称、地块名称、种苗名称-->
+    <update id="updateCrop" parameterType="map">
+        update crop r
+        set r.land_id=#{landId},
+            r.seed_id=#{seedId},
+            r.cropName=#{cropName},
+            r.update_time=#{updateTime}
+        where r.crop_id = #{cropId}
+    </update>
+
+
+    <!--根据地块名称，查询地块id-->
+    <select id="queryParcelInformationLandName" resultType="String">
+        select p.land_id
+        from parcel_information p
+        where p.land_name = #{landName}
+    </select>
+
+    <!--根据地块名称查询地块id-->
+    <select id="querySeedInformationSeedName" resultType="String">
+        select s.seed_id
+        from seed_information s
+        where s.seed_name = #{seedName}
+    </select>
+
+    <!--根据地块名称查询地块id-->
+    <select id="querySeedInformation" resultMap="seedInformationMap">
+        select *
+        from seed_information
+    </select>
+
+
+    <!--根据农作物id，查询施肥信息和化肥信息-->
+    <select id="queryFertilize" resultMap="fertilizationInformationMap">
+        select *
+        from fertilization_information f,
+             fertilizer_information i
+        where f.fertilizer_id = i.fertilizer_id
+          and f.crop_id = #{cropId}
+    </select>
+
+    <!--新增施肥记录-->
+    <insert id="insertFertilize" parameterType="map">
+        <selectKey keyProperty="apply_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into fertilization_information(apply_id,fertilizer_id,crop_id,apply_num,apply_time,update_time,status)
+        value (#{apply_id},#{fertilizerId},#{cropId},#{applyNum},#{applyTime},#{updateTime},#{status})
+    </insert>
+
+    <!--根据化肥名称，查询化肥id-->
+    <select id="queryFertilizerName" resultType="string">
+        select f.fertilizer_id
+        from fertilizer_information f
+        where f.fertilizer_name = #{fertilizerName}
+    </select>
+
+    <!--查询全部化肥-->
+    <select id="queryFertilizer" resultMap="fertilizerInformationMap">
+        select *
+        from fertilizer_information
+    </select>
+
+    <!--新增施药记录-->
+    <insert id="insertApplyMedicine" parameterType="map">
+        <selectKey keyProperty="apply_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into apply_information(apply_id,pesticide_id,crop_id,apply_num,apply_time,update_time,status)
+        value (#{apply_id},#{pesticideId},#{cropId},#{applyNum},#{applyTime},#{updateTime},#{status})
+    </insert>
+
+    <!--根据农作物id，查询施药信息和农药信息-->
+    <select id="queryApplyMedicineId" resultMap="applyInformationMap">
+        select *
+        from apply_information a,
+             pesticide_information p
+        where a.pesticide_id = p.pesticide_id
+          and a.crop_id = #{cropId}
+    </select>
+
+    <!--查询全部农药-->
+    <select id="queryApplyMedicine" resultMap="pesticideInformationMap">
+        select *
+        from pesticide_information
+    </select>
+
+    <!--根据农药名称，查询农药id-->
+    <select id="queryApplyMedicineName" resultType="string">
+        select p.pesticide_id
+        from pesticide_information p
+        where p.pesticide_name = #{pesticideNamew}
+    </select>
+
+    <!--根据农作物id，查询灌溉记录-->
+    <select id="queryIrrigationInformation" resultMap="irrigationInformationMap">
+        select *
+        from irrigation_information i
+        where i.crop_id = #{cropId}
+    </select>
+
+    <!--新增灌溉记录-->
+    <insert id="insertIrrigationInformation" parameterType="map">
+        <selectKey keyProperty="irrigation_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into irrigation_information(irrigation_id,crop_id,irrigation_num,irrigation_time,update_time,status)
+        value (#{irrigation_id},#{cropId},#{irrigationNum},#{irrigationTime},#{updateTime},#{status})
+    </insert>
+
+
+</mapper>

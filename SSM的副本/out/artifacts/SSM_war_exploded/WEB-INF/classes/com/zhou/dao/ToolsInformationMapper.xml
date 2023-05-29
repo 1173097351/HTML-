@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhou.dao.ToolsInformationMapper">
+
+    <resultMap id="toolsInformationMap" type="ToolsInformation">
+        <id property="toolId" column="tool_id" jdbcType="VARCHAR"/>
+        <result property="toolName" column="tool_name" jdbcType="VARCHAR"/>
+        <result property="supplierId" column="supplier_id" jdbcType="VARCHAR"/>
+        <result property="storageNum" column="storage_num" jdbcType="DOUBLE"/>
+        <result property="inNum" column="in_num" jdbcType="DOUBLE"/>
+        <result property="outNum" column="out_num" jdbcType="DOUBLE"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <association property="supplier" javaType="Supplier">
+            <id property="supplierId" column="supplier_id" jdbcType="VARCHAR"/>
+            <result property="supplierName" column="supplier_name" jdbcType="VARCHAR"/>
+            <result property="supplierAddress" column="supplier_address" jdbcType="VARCHAR"/>
+            <result property="concatPerson" column="concat_person" jdbcType="VARCHAR"/>
+            <result property="concatMethod" column="concat_method" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+
+    <!--查询全部农具-->
+    <select id="queryToolsInformationList" resultMap="toolsInformationMap">
+        select * from tools_information t
+        left join
+        supplier u on
+        t.supplier_id=u.supplier_id
+        <where>
+            <if test="toolId!=null">
+                t.tool_id=#{toolId}
+            </if>
+        </where>
+    </select>
+
+    <!--根据map查询农具-->
+    <select id="queryToolsInformationion" resultMap="toolsInformationMap">
+        select * from tools_information t
+        left join
+        supplier u on
+        t.supplier_id=u.supplier_id
+        <where>
+            <if test="toolId!=null">
+                t.tool_id=#{toolId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增农具-->
+    <insert id="insertToolsInformation">
+        <selectKey keyProperty="tool_id" resultType="string" order="BEFORE">
+            select uuid()
+        </selectKey>
+        insert into tools_information(tool_id,tool_name,status)
+        value
+        (#{tool_id},#{toolName},#{status})
+    </insert>
+
+    <!--根据id，更新农具-->
+    <update id="updateToolsInformation">
+        update tools_information t
+        <set>
+            <if test="toolName!=null">
+                t.tool_name=#{toolName},
+            </if>
+            <if test="supplierId!=null">
+                t.supplier_id=#{supplierId},
+            </if>
+            <if test="inNum!=null">
+                t.in_num=#{inNum},
+            </if>
+            <if test="updateTime!=null">
+                t.update_time=#{updateTime}
+            </if>
+        </set>
+        where t.tool_id =#{toolId}
+    </update>
+
+    <!--根据id，删除农具-->
+    <delete id="deleteToolsInformation">
+        delete
+        from tools_information t
+        where t.tool_id = #{toolId}
+    </delete>
+
+
+</mapper>
